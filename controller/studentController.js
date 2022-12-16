@@ -8,7 +8,8 @@ const signUp = async (req, res) => {
     const encryptedPassword = await bcrypt.hash(req.body.password, salt);
     req.body.password = encryptedPassword;
     console.log("password::   " + encryptedPassword);
-
+    const { userName } = req.body.userName;
+  
     if(!(req.body.userName && req.body.password && req.body.firstName && req.body.lastName && req.body.phoneNumber && req.body.gender && req.body.DOB))
     {
         return res.status(400).json({ message: "please provide the valid details" });
@@ -28,7 +29,7 @@ const signUp = async (req, res) => {
     res.status(400).json({
       status: "failure",
       response: null,
-      message: "please provide the mandatory details ",
+      message: "already exists,please provide the valid details ",
     });
   }
 };

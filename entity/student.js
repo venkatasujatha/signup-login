@@ -13,14 +13,17 @@ const student_credentials = new EntitySchema({
         },
         lastName:{
             type:'varchar',
+
             nullable:false
         },      
         userName:{
             type:'varchar',
+            unique:true,
             nullable:false
         },
         password:{
             type:'varchar',
+            unique:true,
             nullable:false
         },
         gender:{
