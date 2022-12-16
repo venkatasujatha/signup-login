@@ -8,14 +8,7 @@ const signUp = async (req, res) => {
     const encryptedPassword = await bcrypt.hash(req.body.password, salt);
     req.body.password = encryptedPassword;
     console.log("password::   " + encryptedPassword);
-    const { userName } = req.body.userName;
-  
-    if(!(req.body.userName && req.body.password && req.body.firstName && req.body.lastName && req.body.phoneNumber && req.body.gender && req.body.DOB))
-    {
-        return res.status(400).json({ message: "please provide the valid details" });
-    }
-    else{
-
+    
         const resp = await studentRepo.save(req.body);
 
         res.status(200).json({
@@ -23,7 +16,6 @@ const signUp = async (req, res) => {
             response: resp,
             message: "account created successfully",
           });
-    }
   } catch (error) {
     console.log(error.message);
     res.status(400).json({
