@@ -2,6 +2,10 @@ const { dataSource } = require("../database");
 const bcrypt = require("bcryptjs");
 const studentRepo = dataSource.getRepository("student");
 //const student = require("../entity/student");
+
+require('dotenv').config();
+
+
 const signUp = async (req, res) => {
   try {
     const salt = await bcrypt.genSalt(10);
@@ -62,4 +66,31 @@ const login = async (req, res) => {
     console.log(error.message);
   }
 };
-module.exports = { signUp, login };
+const updatePassword = async (req, res) => {
+  try {
+    const resp1 = await studentRepo.findOneBy({ userName: req.body.userName });
+
+    // console.log(resp1)
+
+    if (!resp1.userName) {
+      console.log("user not exists");
+    } else {
+      const salt = await bcrypt.genSalt(10);
+
+      const encryptedPassword = await bcrypt.hash(req.body.password, salt);
+
+      req.body.password = encryptedPassword;
+
+      const resp = await studentRepo.update(
+        { userName: req.body.userName },
+        req.body
+      );
+
+      res.send(resp);
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+module.exports = { signUp, login,updatePassword };
